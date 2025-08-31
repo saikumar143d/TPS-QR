@@ -1,208 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trinadha Paan Shop</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - DM Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'DM Sans', sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: #121212;
             background-image: radial-gradient(circle at center, #242424, #121212);
         }
+
         .header-content {
             background-color: rgba(28, 28, 28, 0.8);
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
-        .container-card {
+
+        .card {
             background-color: #1c1c1c;
             border-radius: 1.5rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            padding: 2.5rem; /* Increased padding for better spacing */
+            padding: 2.5rem;
             width: 100%;
             max-width: 400px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             animation: fadeIn 0.8s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
+            margin-top: 2rem;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+
+        .upi-btn-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
         }
-        .input-group {
-            margin-top: 1.5rem; /* Increased margin */
-            margin-bottom: 1.5rem; /* Increased margin */
-            width: 100%;
-            text-align: left;
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #d1d5db;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #374151;
-            background-color: #242424;
-            color: #ffffff;
+
+        .upi-btn {
+            background-color: #2c2c2c;
             border-radius: 0.75rem;
-            font-size: 0.95rem;
             transition: all 0.2s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .input-group input:focus {
-            outline: none;
-            border-color: #7b58e7;
-            box-shadow: 0 0 0 3px rgba(123, 88, 231, 0.4);
-            background-color: #1a1a1a;
+
+        .upi-btn:hover {
+            transform: scale(1.05);
+            background-color: #383838;
+            border-color: rgba(255, 255, 255, 0.3);
         }
-        .input-group input::placeholder {
-            color: #4b5563;
-        }
-        /* Hide the number input spin buttons */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-        .upi-button {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 0.5rem;
-            border: 1px solid #374151;
-            border-radius: 0.75rem;
-            background-color: #242424;
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            width: 80px;
-            height: 80px;
-        }
-        .upi-button:hover {
-            background-color: #2d3b4b;
-            border-color: #7b58e7;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px -2px rgba(123, 88, 231, 0.3), 0 3px 5px -1px rgba(123, 88, 231, 0.2);
-        }
-        .upi-button img {
-            width: 45px;
-            height: 45px;
+
+        .upi-btn-icon {
             transition: transform 0.2s ease-in-out;
-            border-radius: 50%;
         }
-        .upi-button:hover img {
-            transform: scale(1.1);
+
+        .upi-btn:hover .upi-btn-icon {
+            transform: scale(1.2);
         }
+
         .modal {
             background-color: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(10px);
             transition: opacity 0.3s ease;
-            animation: pulse-bg 5s ease-in-out infinite;
         }
-        @keyframes pulse-bg {
-            0% { background-color: rgba(0, 0, 0, 0.85); }
-            50% { background-color: rgba(0, 0, 0, 0.95); }
-            100% { background-color: rgba(0, 0, 0, 0.85); }
-        }
+
         .modal-content {
             background-color: #1c1c1c;
             border: 1px solid rgba(255, 255, 255, 0.08);
             animation: modalPopIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
+        
+        .qr-button-active {
+            box-shadow: 0 0 0 2px #fff, 0 0 0 4px #4f46e5;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
         @keyframes modalPopIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        /* New button styling for the popup */
-        .popup-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 0.5rem;
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-            width: 60px;
-            height: 60px;
-            background-color: #242424;
-            border: 1px solid #374151;
-        }
-        .popup-button:hover {
-            background-color: #2d3b4b;
-            border-color: #7b58e7;
-        }
-        .popup-button img {
-            width: 35px;
-            height: 35px;
-            transition: transform 0.2s ease-in-out;
-            border-radius: 50%;
-        }
-        .popup-button-active {
-            border-color: #7b58e7;
-            box-shadow: 0 0 0 2px rgba(123, 88, 231, 0.5);
-            background-color: #1a1a1a;
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
     </style>
 </head>
+
 <body class="flex flex-col items-center min-h-screen p-4 pt-24">
+
     <!-- Fixed Floating Header -->
-    <header class="fixed top-0 left-0 w-full z-50 header-content py-4 px-6 flex justify-center">
-        <div class="flex items-center space-x-2">
-            <svg class="h-6 w-6 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-            </svg>
-            <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-400">
-                Trinadha Paan Shop
-            </h1>
-        </div>
+    <header class="fixed top-0 left-0 w-full z-50 py-4 px-6 header-content flex items-center justify-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM5.4 9.6a.75.75 0 011.06 0L10 13.14l3.54-3.54a.75.75 0 111.06 1.06l-4.07 4.07a.75.75 0 01-1.06 0L5.4 10.66a.75.75 0 010-1.06z" clip-rule="evenodd" />
+        </svg>
+        <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-400">
+            Trinadha Paan Shop
+        </h1>
     </header>
 
-    <div class="container-card">
-        <p class="text-center text-gray-400 mb-5 text-sm">Select a UPI ID to generate your QR code</p>
+    <!-- Main Card -->
+    <div class="card flex flex-col items-center">
+        <h2 class="text-xl font-bold text-gray-100 mb-6">Enter Amount</h2>
 
-        <div class="input-group">
-            <label for="amount" class="text-sm">Amount (INR)</label>
-            <input type="number" id="amount" placeholder="e.g., 100.00" step="0.01" class="rounded-lg shadow-sm">
+        <!-- Amount Input -->
+        <div class="w-full flex items-center bg-gray-900 rounded-xl p-4 mb-6 transition duration-300 border border-transparent focus-within:border-indigo-500">
+            <span class="text-gray-400 mr-2 text-2xl font-bold">₹</span>
+            <input id="amountInput" type="text" class="flex-1 bg-transparent text-white text-2xl font-bold focus:outline-none placeholder-gray-500" placeholder="0.00">
         </div>
 
-        <div id="upi-buttons-container" class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6 w-full place-items-center">
-            <!-- UPI buttons will be dynamically generated here -->
+        <!-- UPI ID Buttons -->
+        <div id="upi-button-container" class="upi-btn-container w-full">
+            <!-- Buttons will be dynamically added here -->
         </div>
 
-        <a href="history.html" class="mt-8 w-full">
-            <button class="w-full bg-gray-700 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-800 transition duration-300 ease-in-out">
-                View History
-            </button>
+        <!-- Hidden history button -->
+        <a href="history.html" id="history-btn" class="mt-6 text-gray-400 hover:text-white transition-colors duration-300 font-semibold">
+            View Payment History
         </a>
     </div>
 
     <!-- Modal for QR Code Display -->
-    <div id="qr-modal-overlay" class="modal fixed inset-0 flex items-center justify-center hidden">
-        <div id="qr-modal" class="rounded-lg p-6 shadow-2xl relative w-11/12 max-w-xs modal-content">
-            <button id="close-modal-btn" class="absolute top-3 right-4 text-gray-500 hover:text-gray-100 text-2xl font-bold transition-transform transform hover:scale-110">&times;</button>
-            <h2 class="text-xl font-bold text-gray-100 text-center mb-4">Scan to Pay</h2>
-            <div id="qr-code-modal-container" class="flex justify-center items-center p-8 bg-gray-900 rounded-lg">
-                <!-- QR code will be generated here -->
-            </div>
-            <p id="upi-id-display" class="text-center text-gray-400 font-medium mt-4 truncate"></p>
-            
-            <div id="popup-upi-buttons" class="grid grid-cols-4 gap-4 mt-6">
-                <!-- UPI buttons for the popup will be generated here -->
+    <div id="qr-modal-overlay" class="modal fixed inset-0 flex items-center justify-center hidden z-50">
+        <div id="qr-modal" class="rounded-lg p-6 shadow-2xl relative w-11/12 max-w-sm modal-content">
+            <button id="close-modal-btn" class="absolute top-3 right-4 text-gray-500 hover:text-gray-100 text-2xl font-bold transition-transform transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">&times;</button>
+            <h2 class="text-xl font-bold text-gray-100 text-center mb-4">Payment QR Code</h2>
+            <div class="flex flex-col items-center space-y-4">
+                <div id="qr-code-container" class="relative p-6 bg-gray-900 rounded-lg">
+                    <!-- QR code will be generated here -->
+                </div>
+                <div id="popup-upi-buttons" class="flex flex-wrap justify-center gap-3 mt-4">
+                    <!-- UPI buttons will be dynamically added here -->
+                </div>
             </div>
         </div>
     </div>
@@ -219,30 +165,28 @@
                 { "id": "Q639488204@ybl", "label": "PhonePe", "icon": "https://img.utdstc.com/icon/a06/2b4/a062b4fb17896e98996ae80f05de6ceeafda19e3247c92d495214dbc1ea4f050:200" }
             ];
 
-            const amountInput = document.getElementById('amount');
-            const upiButtonsContainer = document.getElementById('upi-buttons-container');
+            const upiButtonContainer = document.getElementById('upi-button-container');
+            const amountInput = document.getElementById('amountInput');
             const qrModalOverlay = document.getElementById('qr-modal-overlay');
-            const qrCodeModalContainer = document.getElementById('qr-code-modal-container');
             const closeModalBtn = document.getElementById('close-modal-btn');
-            const upiIdDisplay = document.getElementById('upi-id-display');
+            const qrCodeContainer = document.getElementById('qr-code-container');
             const popupUpiButtons = document.getElementById('popup-upi-buttons');
             const historyKey = 'upiHistory';
+            let currentQR = null;
 
-            const saveToHistory = (upiId, amount) => {
-                const history = JSON.parse(localStorage.getItem(historyKey) || '[]');
-                const newEntry = {
-                    id: upiId,
-                    amount: amount || '0',
-                    timestamp: new Date().toLocaleString()
-                };
-                history.unshift(newEntry);
-                localStorage.setItem(historyKey, JSON.stringify(history));
+            const getUpiLabel = (id) => {
+                const upi = upiData.find(u => u.id === id);
+                return upi ? upi.label : id;
             };
 
-            const generateQrCode = (upiId, payeeName) => {
-                const amount = amountInput.value.trim();
-                let upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}`;
+            const getUpiIcon = (id) => {
+                const upi = upiData.find(u => u.id === id);
+                return upi ? upi.icon : 'https://placehold.co/40x40/4B5563/D1D5DB?text=Icon';
+            };
 
+            const generateQrCode = (upiId, amount) => {
+                const payeeName = getUpiLabel(upiId);
+                let upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}`;
                 if (payeeName) {
                     upiUri += `&pn=${encodeURIComponent(payeeName)}`;
                 }
@@ -251,78 +195,98 @@
                     upiUri += `&cu=INR`;
                 }
 
-                qrCodeModalContainer.innerHTML = '';
-                
-                new QRCode(qrCodeModalContainer, {
+                if (currentQR) {
+                    currentQR.clear();
+                    qrCodeContainer.innerHTML = '';
+                }
+
+                currentQR = new QRCode(qrCodeContainer, {
                     text: upiUri,
-                    width: 200,
-                    height: 200,
+                    width: 250,
+                    height: 250,
                     colorDark: "#ffffff",
                     colorLight: "#1c1c1c",
                     correctLevel: QRCode.CorrectLevel.H
                 });
-
-                upiIdDisplay.textContent = upiId;
-                
-                qrModalOverlay.classList.remove('hidden');
-                saveToHistory(upiId, amount);
             };
 
-            const createButton = (upi) => {
+            const saveHistory = (id, amount) => {
+                const history = JSON.parse(localStorage.getItem(historyKey) || '[]');
+                const timestamp = new Date().toLocaleString('en-IN', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                });
+                history.unshift({
+                    id,
+                    amount: parseFloat(amount || 0).toFixed(2),
+                    timestamp
+                });
+                localStorage.setItem(historyKey, JSON.stringify(history.slice(0, 10)));
+            };
+
+            const createUpiButton = (upi) => {
                 const button = document.createElement('button');
-                button.className = 'upi-button';
+                button.className = 'upi-btn py-4 px-6 flex flex-col items-center justify-center space-y-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900';
                 button.innerHTML = `
-                    <img src="${upi.icon}" alt="${upi.label} icon" onerror="this.onerror=null;this.src='https://placehold.co/45x45/4B5563/D1D5DB?text=Icon'">
-                    <span class="text-xs font-medium text-gray-400 mt-2">${upi.label}</span>
+                    <img src="${upi.icon}" alt="${upi.label} Icon" class="h-12 w-12 rounded-full upi-btn-icon" onerror="this.onerror=null;this.src='https://placehold.co/48x48/4B5563/D1D5DB?text=Icon'">
+                    <span class="text-white text-sm font-semibold">${upi.label}</span>
                 `;
                 button.addEventListener('click', () => {
-                    generateQrCode(upi.id, upi.label);
-                    // Open the popup with the selected button highlighted
-                    const popupButtons = Array.from(popupUpiButtons.children);
-                    const selectedPopupBtn = popupButtons.find(btn => btn.dataset.upiId === upi.id);
-                    if (selectedPopupBtn) {
-                        popupButtons.forEach(btn => btn.classList.remove('popup-button-active'));
-                        selectedPopupBtn.classList.add('popup-button-active');
-                    }
+                    const amount = amountInput.value.trim();
+                    generateQrCode(upi.id, amount);
+                    saveHistory(upi.id, amount);
+                    qrModalOverlay.classList.remove('hidden');
+
+                    // Highlight the clicked button in the popup
+                    document.querySelectorAll('#popup-upi-buttons button').forEach(btn => btn.classList.remove('qr-button-active'));
+                    const popupBtn = popupUpiButtons.querySelector(`[data-upi-id="${upi.id}"]`);
+                    if (popupBtn) popupBtn.classList.add('qr-button-active');
                 });
                 return button;
             };
 
-            // Dynamically create main page buttons
-            upiData.forEach(upi => {
-                upiButtonsContainer.appendChild(createButton(upi));
-            });
-
-            // Dynamically create popup buttons
-            upiData.forEach(upi => {
+            const createPopupUpiButton = (upi) => {
                 const button = document.createElement('button');
-                button.className = 'popup-button';
-                button.dataset.upiId = upi.id; // Store UPI ID for highlighting
-                button.innerHTML = `<img src="${upi.icon}" alt="${upi.label} icon" onerror="this.onerror=null;this.src='https://placehold.co/35x35/4B5563/D1D5DB?text=Icon'">`;
-                button.addEventListener('click', (event) => {
-                    // Remove active class from all buttons
-                    const buttons = event.currentTarget.parentNode.children;
-                    Array.from(buttons).forEach(btn => {
-                        btn.classList.remove('popup-button-active');
-                    });
-                    // Add active class to the clicked button
-                    event.currentTarget.classList.add('popup-button-active');
-                    // Generate the new QR code
-                    generateQrCode(upi.id, upi.label);
+                button.className = 'w-16 h-16 p-2 bg-gray-900 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 hover:border-indigo-500 border-2 border-transparent';
+                button.setAttribute('data-upi-id', upi.id);
+                button.innerHTML = `
+                    <img src="${upi.icon}" alt="${upi.label} Icon" class="w-full h-full rounded-full" onerror="this.onerror=null;this.src='https://placehold.co/40x40/4B5563/D1D5DB?text=Icon'">
+                `;
+                button.addEventListener('click', () => {
+                    const amount = amountInput.value.trim();
+                    generateQrCode(upi.id, amount);
+                    
+                    document.querySelectorAll('#popup-upi-buttons button').forEach(btn => btn.classList.remove('qr-button-active'));
+                    button.classList.add('qr-button-active');
                 });
-                popupUpiButtons.appendChild(button);
-            });
-
-            const closeModal = () => {
-                qrModalOverlay.classList.add('hidden');
-                qrCodeModalContainer.innerHTML = '';
+                return button;
             };
 
-            closeModalBtn.addEventListener('click', closeModal);
+            upiData.forEach(upi => {
+                upiButtonContainer.appendChild(createUpiButton(upi));
+                popupUpiButtons.appendChild(createPopupUpiButton(upi));
+            });
+
+            closeModalBtn.addEventListener('click', () => {
+                qrModalOverlay.classList.add('hidden');
+            });
+
             qrModalOverlay.addEventListener('click', (e) => {
                 if (e.target.id === 'qr-modal-overlay') {
-                    closeModal();
+                    qrModalOverlay.classList.add('hidden');
                 }
+            });
+
+            // Prevent input of non-numeric characters except for a single dot
+            amountInput.addEventListener('input', (e) => {
+                let value = e.target.value;
+                value = value.replace(/[^0-9.]/g, '');
+                const parts = value.split('.');
+                if (parts.length > 2) {
+                    value = parts[0] + '.' + parts.slice(1).join('');
+                }
+                e.target.value = value;
             });
         });
     </script>
