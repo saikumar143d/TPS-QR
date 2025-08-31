@@ -139,14 +139,14 @@
 
     <!-- Modal for QR Code Display -->
     <div id="qr-modal-overlay" class="modal fixed inset-0 flex items-center justify-center hidden z-50">
-        <div id="qr-modal" class="rounded-lg p-6 shadow-2xl relative w-11/12 max-w-sm sm:max-w-md modal-content">
+        <div id="qr-modal" class="rounded-lg p-4 shadow-2xl relative w-11/12 max-w-xs modal-content">
             <button id="close-modal-btn" class="absolute top-3 right-4 text-gray-500 hover:text-gray-100 text-2xl font-bold transition-transform transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">&times;</button>
-            <h2 class="text-xl font-bold text-gray-100 text-center mb-4">Payment QR Code</h2>
+            <h2 class="text-lg font-bold text-gray-100 text-center mb-4">Payment QR Code</h2>
             <div class="flex flex-col items-center space-y-4">
-                <div id="qr-code-container" class="relative p-6 bg-gray-900 rounded-lg">
+                <div id="qr-code-container" class="relative p-4 bg-gray-900 rounded-lg">
                     <!-- QR code will be generated here -->
                 </div>
-                <div id="popup-upi-buttons" class="flex flex-wrap justify-center gap-3 mt-4">
+                <div id="popup-upi-buttons" class="flex flex-wrap justify-center gap-2 mt-4">
                     <!-- UPI buttons will be dynamically added here -->
                 </div>
             </div>
@@ -248,17 +248,23 @@
 
             const createPopupUpiButton = (upi) => {
                 const button = document.createElement('button');
-                button.className = 'w-14 h-14 p-2 bg-gray-900 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 hover:border-indigo-500 border-2 border-transparent';
+                button.className = 'w-16 h-16 p-2 bg-gray-900 rounded-full flex flex-col items-center justify-center transition-all duration-300 hover:scale-110 hover:border-indigo-500 border-2 border-transparent relative';
                 button.setAttribute('data-upi-id', upi.id);
                 button.innerHTML = `
-                    <img src="${upi.icon}" alt="${upi.label} Icon" class="w-full h-full rounded-full" onerror="this.onerror=null;this.src='https://placehold.co/40x40/4B5563/D1D5DB?text=Icon'">
+                    <img src="${upi.icon}" alt="${upi.label} Icon" class="w-10 h-10 rounded-full" onerror="this.onerror=null;this.src='https://placehold.co/40x40/4B5563/D1D5DB?text=Icon'">
+                    <span class="absolute bottom-[-1.5rem] text-white text-xs text-center hidden transform scale-90 opacity-0 transition-all duration-300">${upi.label}</span>
                 `;
                 button.addEventListener('click', () => {
                     const amount = amountInput.value.trim();
                     generateQrCode(upi.id, amount);
                     
-                    document.querySelectorAll('#popup-upi-buttons button').forEach(btn => btn.classList.remove('qr-button-active'));
+                    document.querySelectorAll('#popup-upi-buttons button').forEach(btn => {
+                        btn.classList.remove('qr-button-active');
+                        btn.querySelector('span').classList.add('hidden', 'scale-90', 'opacity-0');
+                    });
+                    
                     button.classList.add('qr-button-active');
+                    button.querySelector('span').classList.remove('hidden', 'scale-90', 'opacity-0');
                 });
                 return button;
             };
