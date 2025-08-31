@@ -128,6 +128,12 @@
                 const upi = upiData.find(u => u.id === upiId);
                 return upi ? upi.icon : 'https://placehold.co/45x45/4B5563/D1D5DB?text=Icon';
             };
+            
+            // New helper function to get UPI label by ID
+            const getUpiLabel = (upiId) => {
+                const upi = upiData.find(u => u.id === upiId);
+                return upi ? upi.label : upiId; // Fallback to ID if label is not found
+            };
 
             const loadHistory = () => {
                 const history = JSON.parse(localStorage.getItem(historyKey) || '[]');
@@ -135,7 +141,11 @@
             };
 
             const generateQrCode = (upiId, amount) => {
+                const payeeName = getUpiLabel(upiId);
                 let upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}`;
+                if (payeeName) {
+                    upiUri += `&pn=${encodeURIComponent(payeeName)}`;
+                }
                 if (amount && parseFloat(amount) > 0) {
                     upiUri += `&am=${encodeURIComponent(amount)}`;
                     upiUri += `&cu=INR`;
@@ -172,7 +182,8 @@
                             <img src="${getUpiIcon(item.id)}" alt="UPI Icon" class="w-10 h-10 rounded-full" onerror="this.onerror=null;this.src='https://placehold.co/40x40/4B5563/D1D5DB?text=Icon'">
                             <div class="text-left">
                                 <p class="font-bold">₹${item.amount}</p>
-                                <p class="text-sm truncate w-32 md:w-48">${item.id}</p>
+                                <!-- Replaced UPI ID with UPI Label -->
+                                <p class="text-sm truncate w-32 md:w-48">${getUpiLabel(item.id)}</p>
                             </div>
                         </div>
                         <span class="text-xs text-gray-500">${item.timestamp}</span>
