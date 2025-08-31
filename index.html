@@ -183,6 +183,12 @@
         <div id="upi-buttons-container" class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6 w-full place-items-center">
             <!-- UPI buttons will be dynamically generated here -->
         </div>
+
+        <a href="history.html" class="mt-8 w-full">
+            <button class="w-full bg-gray-700 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-800 transition duration-300 ease-in-out">
+                View History
+            </button>
+        </a>
     </div>
 
     <!-- Modal for QR Code Display -->
@@ -220,6 +226,18 @@
             const closeModalBtn = document.getElementById('close-modal-btn');
             const upiIdDisplay = document.getElementById('upi-id-display');
             const popupUpiButtons = document.getElementById('popup-upi-buttons');
+            const historyKey = 'upiHistory';
+
+            const saveToHistory = (upiId, amount) => {
+                const history = JSON.parse(localStorage.getItem(historyKey) || '[]');
+                const newEntry = {
+                    id: upiId,
+                    amount: amount || '0',
+                    timestamp: new Date().toLocaleString()
+                };
+                history.unshift(newEntry);
+                localStorage.setItem(historyKey, JSON.stringify(history));
+            };
 
             const generateQrCode = (upiId, payeeName) => {
                 const amount = amountInput.value.trim();
@@ -247,6 +265,7 @@
                 upiIdDisplay.textContent = upiId;
                 
                 qrModalOverlay.classList.remove('hidden');
+                saveToHistory(upiId, amount);
             };
 
             const createButton = (upi) => {
