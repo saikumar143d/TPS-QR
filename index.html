@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trinadha Paan Shop</title>
+    <!-- Favicon based on header logo -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23fbbf24'><path fill-rule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zM5.4 9.6a.75.75 0 011.06 0L10 13.14l3.54-3.54a.75.75 0 111.06 1.06l-4.07 4.07a.75.75 0 01-1.06 0L5.4 10.66a.75.75 0 010-1.06z' clip-rule='evenodd' /></svg>" type="image/svg+xml">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
@@ -73,7 +75,7 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             animation: modalPopIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        
+
         .qr-button-active {
             box-shadow: 0 0 0 2px #fff, 0 0 0 4px #4f46e5;
         }
@@ -153,8 +155,8 @@
         </div>
     </div>
 
-    <!-- QR code library from CDN -->
-    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+    <!-- QR code styling library from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -186,6 +188,8 @@
 
             const generateQrCode = (upiId, amount) => {
                 const payeeName = getUpiLabel(upiId);
+                const upiIcon = getUpiIcon(upiId);
+
                 let upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}`;
                 if (payeeName) {
                     upiUri += `&pn=${encodeURIComponent(payeeName)}`;
@@ -195,19 +199,38 @@
                     upiUri += `&cu=INR`;
                 }
 
-                if (currentQR) {
-                    currentQR.clear();
-                    qrCodeContainer.innerHTML = '';
-                }
+                // Clear previous QR code
+                qrCodeContainer.innerHTML = '';
 
-                currentQR = new QRCode(qrCodeContainer, {
-                    text: upiUri,
+                // Generate new QR code
+                currentQR = new QRCodeStyling({
                     width: 250,
                     height: 250,
-                    colorDark: "#ffffff",
-                    colorLight: "#1c1c1c",
-                    correctLevel: QRCode.CorrectLevel.H
+                    type: "svg",
+                    data: upiUri,
+                    image: upiIcon,
+                    dotsOptions: {
+                        color: "#ffffff",
+                        type: "rounded" 
+                    },
+                    cornersSquareOptions: {
+                        color: "#ffffff",
+                        type: "extra-rounded" 
+                    },
+                    cornersDotOptions: {
+                        color: "#ffffff",
+                        type: "dot"
+                    },
+                    backgroundOptions: {
+                        color: "#1c1c1c",
+                    },
+                    imageOptions: {
+                        crossOrigin: "anonymous",
+                        margin: 2
+                    }
                 });
+
+                currentQR.append(qrCodeContainer);
             };
 
             const saveHistory = (id, amount) => {
@@ -238,7 +261,6 @@
                     saveHistory(upi.id, amount);
                     qrModalOverlay.classList.remove('hidden');
 
-                    // Highlight the clicked button in the popup
                     document.querySelectorAll('#popup-upi-buttons button').forEach(btn => btn.classList.remove('qr-button-active'));
                     const popupBtn = popupUpiButtons.querySelector(`[data-upi-id="${upi.id}"]`);
                     if (popupBtn) popupBtn.classList.add('qr-button-active');
@@ -252,19 +274,16 @@
                 button.setAttribute('data-upi-id', upi.id);
                 button.innerHTML = `
                     <img src="${upi.icon}" alt="${upi.label} Icon" class="w-10 h-10 rounded-full" onerror="this.onerror=null;this.src='https://placehold.co/40x40/4B5563/D1D5DB?text=Icon'">
-                    <span class="absolute bottom-[-1.5rem] text-white text-xs text-center hidden transform scale-90 opacity-0 transition-all duration-300">${upi.label}</span>
                 `;
                 button.addEventListener('click', () => {
                     const amount = amountInput.value.trim();
                     generateQrCode(upi.id, amount);
-                    
+
                     document.querySelectorAll('#popup-upi-buttons button').forEach(btn => {
                         btn.classList.remove('qr-button-active');
-                        btn.querySelector('span').classList.add('hidden', 'scale-90', 'opacity-0');
                     });
-                    
+
                     button.classList.add('qr-button-active');
-                    button.querySelector('span').classList.remove('hidden', 'scale-90', 'opacity-0');
                 });
                 return button;
             };
@@ -297,4 +316,5 @@
         });
     </script>
 </body>
+
 </html>
